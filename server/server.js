@@ -13,10 +13,9 @@ app.get('/todos', (req, res) => {
 })
 
 app.post('/todo', (req, res) => {
-    if(req.body !== undefined){
+    if (req.body !== undefined) {
         const data = {
             id: shortid.generate(),
-            title: req.body.title,
             body: req.body.body,
             date: req.body.date,
         }
@@ -28,14 +27,30 @@ app.post('/todo', (req, res) => {
 })
 
 app.delete('/todo/:id', (req, res) => {
-    const {id} = req.params;
-    for(let i = 0; i < todos.length; i++){
-        if(todos[i].id === id){
+    const { id } = req.params;
+    for (let i = 0; i < todos.length; i++) {
+        if (todos[i].id === id) {
             todos.splice(i, 1)
             res.send({
                 success: true
             })
         }
+    }
+})
+
+app.post('/status', (req, res) => {
+    if (req.body !== undefined) {
+        const id = req.body.id
+        const data = {
+            status: req.body.status,
+            cross: req.body.cross
+        }
+        const index = todos.findIndex(arr => arr.id === id)
+        todos[index].status = data.status
+        todos[index].cross = data.cross
+        res.send({
+            success: true
+        })
     }
 })
 
